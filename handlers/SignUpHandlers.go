@@ -7,8 +7,6 @@ import (
 	"tendasclub/database"
 	"tendasclub/models"
 	"tendasclub/validate"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 func SignUpHandler(w http.ResponseWriter, r* http.Request) {
@@ -28,16 +26,12 @@ func SignUpHandler(w http.ResponseWriter, r* http.Request) {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	res, err := database.CreateUser(user)
 	if err != nil {
-		http.Error(w, "Erro ao criptografar a senha", http.StatusInternalServerError)
+		http.Error(w, "Erro ao criar usuário: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	_, err = database.DB.Exec("INSERT INTO users (name, email, password, number, role) VALUES (?, ?, ?, ?, ?)", user.Name, user.Email, hashedPassword, user.Number, user.Role)
-	if err != nil {
-		http.Error(w, "Erro ao inserir o usuário no banco de dados", http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprintf(w, "Usuário %s cadastrado com sucesso!", user.Name)
+	fmt.Fprintf(w, "Usuário criado com sucesso: %v", res)
+	w.WriteHeader(http.StatusCreated)
 }

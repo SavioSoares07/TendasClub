@@ -4,16 +4,31 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql" // importa o driver MySQL
+	"github.com/joho/godotenv"
 )
 
 var DB *sql.DB
 
 func ConnectionDB() {
+	
 	var err error
 
-	DB, err = sql.Open("mysql", "root:savio2002@tcp(localhost:3306)/tendasclub")
+	err = godotenv.Load()
+	if err != nil {
+	log.Fatal("Erro ao carregar o arquivo .env")
+	}
+
+	godotenv.Load()
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	password := os.Getenv("DB_PASSWORD")
+	user := os.Getenv("DB_USER")
+	tableName := os.Getenv("DB_NAME")
+
+	DB, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, tableName))
 	if err != nil {
 		log.Fatal(err)
 	}

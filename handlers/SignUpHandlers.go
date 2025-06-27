@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"tendasclub/database"
+	"tendasclub/controllers"
 	"tendasclub/models"
 	"tendasclub/validate"
 )
 
 func SignUpHandler(w http.ResponseWriter, r* http.Request) {
 
-	database.ConnectionDB()
 
 	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -26,7 +25,7 @@ func SignUpHandler(w http.ResponseWriter, r* http.Request) {
 		return
 	}
 
-	res, err := database.CreateUser(user)
+	res, err := controllers.CreateUser(user)
 	if err != nil {
 		http.Error(w, "Erro ao criar usuário: "+err.Error(), http.StatusInternalServerError)
 		return

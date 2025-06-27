@@ -18,7 +18,7 @@ func ConnectionDB() {
 
 	err = godotenv.Load()
 	if err != nil {
-	log.Fatal("Erro ao carregar o arquivo .env")
+		log.Fatal("Erro ao carregar o arquivo .env")
 	}
 
 	godotenv.Load()

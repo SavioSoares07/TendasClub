@@ -13,10 +13,12 @@ import (
 	var secretKey []byte
 
 func init() {
+	// Carrega as variáveis de ambiente do arquivo .env
 	err := godotenv.Load()
 	if err != nil {
     log.Fatal("Erro ao carregar o arquivo .env")
 }
+	// Carrega a variável TOKEN_SECRET do arquivo .env
 	godotenv.Load()
 	tokenSecret := os.Getenv("TOKEN_SECRET")
 
@@ -24,6 +26,7 @@ func init() {
 	secretKey = []byte(tokenSecret)
 }
 
+// CreateToken cria um token JWT para o usuário com base no email
 func CreateToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
@@ -37,7 +40,7 @@ func CreateToken(email string) (string, error) {
 	}
 	return tokenString, nil
 }
-
+// VerifyToken verifica se o token JWT é válido
 func VerifyToken(tokenString string) error{
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil	

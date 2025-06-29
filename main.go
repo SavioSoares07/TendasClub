@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-
+	//Connection Database
 	database.ConnectionDB()
 
 	//Set up the Http Server

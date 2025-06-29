@@ -21,6 +21,7 @@ func ConnectionDB() {
 		log.Fatal("Erro ao carregar o arquivo .env")
 	}
 
+	// Carrega as variáveis de ambiente do arquivo .env
 	godotenv.Load()
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
@@ -28,6 +29,7 @@ func ConnectionDB() {
 	user := os.Getenv("DB_USER")
 	tableName := os.Getenv("DB_NAME")
 
+	//String de conexão com o banco de dados MySQL
 	DB, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, tableName))
 	if err != nil {
 		log.Fatal(err)

@@ -11,8 +11,11 @@ import (
 
 func SignInHandler(w http.ResponseWriter, r *http.Request) {
 
-
+	//Salvar dados do usuário
 	var Credentials models.Credentials
+
+	//Ler os dados do usuário
+	//O usuário irá enviar os dados no corpo da requisição
 	err := json.NewDecoder(r.Body).Decode(&Credentials)
 
 	if err != nil {
@@ -20,6 +23,8 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//Verificar se o usuário existe
+	//Se o usuário não existir, retornar um erro 404
 	exist, err := services.UserExists(Credentials.Email)
 	if( err != nil) {
 		http.Error(w, "Erro ao verificar se o usuário existe: "+err.Error(), http.StatusInternalServerError)
@@ -30,6 +35,8 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}	
 
+	//Chamada do controller para fazer o login do usuário
+	//O controller irá chamar o model para verificar as credenciais
 	res, err := controllers.LoginUser(Credentials)
 	if err != nil {
 		http.Error(w, "Erro ao fazer login: "+err.Error(), http.StatusInternalServerError)

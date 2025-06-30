@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"tendasclub/models"
+	"tendasclub/repository"
 	"tendasclub/services"
 
 	"golang.org/x/crypto/bcrypt"
@@ -13,7 +14,7 @@ func LoginUser(c models.Credentials) (string, error) {
 
 	// Verifica se o usuário existe
 	// Se o usuário não existir, retornar um erro 404
-	UserExists, err := services.UserExists(c.Email)
+	UserExists, err := repository.UserExists(c.Email)
 	if err != nil {
 		return "", err
 	}
@@ -22,7 +23,7 @@ func LoginUser(c models.Credentials) (string, error) {
 	}
 
 	//Guarda o usuário em uma variável
-	user, err := services.GetUserByEmail(c.Email)
+	user, err := repository.GetUserByEmail(c.Email)
 	if err != nil {		
 		return "", err
 	}

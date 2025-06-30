@@ -61,7 +61,7 @@ func VerifyToken(tokenString string) (string, error){
    email := claims["email"].(string)
    if email == "" {
 	  return "Email não encontrado no token", err
-}
+	}
 
 
    return email, nil

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"tendasclub/controllers"
 	"tendasclub/models"
-	"tendasclub/services"
+	"tendasclub/repository"
 )
 
 func SignInHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +24,7 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Verificar se o usuário existe
 	//Se o usuário não existir, retornar um erro 404
-	exist, err := services.UserExists(Credentials.Email)
+	exist, err := repository.UserExists(Credentials.Email)
 	if( err != nil) {
 		http.Error(w, "Erro ao verificar se o usuário existe: "+err.Error(), http.StatusInternalServerError)
 		return

@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"tendasclub/database"
 	"tendasclub/models"
-	"tendasclub/services"
+	"tendasclub/repository"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 func CreateUser(user models.User) (string,  error) {
 	// Verifica se o usuário já existe
-	exists, err := services.UserExists(user.Email)
+	exists, err := repository.UserExists(user.Email)
 	if err != nil {
 		return "", fmt.Errorf("erro ao verificar se o usuário já existe: %W", err)
 	}

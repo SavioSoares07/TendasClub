@@ -6,6 +6,7 @@ import (
 	"tendasclub/models"
 
 	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
 )
 
 
@@ -22,6 +23,7 @@ func Validade(u models.User) error{
 		// Validação de email
 		validation.Field(&u.Email,
 		 	validation.Required.Error("Email é obrigatório"),
+			is.Email.Error("Email inválido"),
 		),
 		
 		// Validaçõao de senha

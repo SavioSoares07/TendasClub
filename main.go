@@ -14,6 +14,7 @@ func main() {
 	//Set up the Http Server
 	http.HandleFunc("/register", handlers.SignUpHandler)
 	http.HandleFunc("/login", handlers.SignInHandler)
+	http.HandleFunc("/registerTime", handlers.RegisterTimeHandler)
 
 	//Start the server
 	fmt.Println("Server is running on port 8080")

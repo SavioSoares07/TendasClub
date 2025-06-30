@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -41,18 +40,29 @@ func CreateToken(email string) (string, error) {
 	return tokenString, nil
 }
 // VerifyToken verifica se o token JWT é válido
-func VerifyToken(tokenString string) error{
+func VerifyToken(tokenString string) (string, error){
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil	
 	})
 
 	if err != nil {
-      return err
+      return "", err
    }
   
    if !token.Valid {
-      return fmt.Errorf("invalid token")
+      return "Token inválido", err
    }
   
-   return nil
+   claims, ok := token.Claims.(jwt.MapClaims)
+   if !ok {
+		return "Erro ao extrair as claims do token", err
+   }
+
+   email := claims["email"].(string)
+   if email == "" {
+	  return "Email não encontrado no token", err
+}
+
+
+   return email, nil
 }

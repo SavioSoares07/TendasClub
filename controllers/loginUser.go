@@ -44,5 +44,5 @@ func LoginUser(c models.Credentials) (string, error) {
 		return "Erro ao criar o token", err
 	}
 	fmt.Print(tokenString)
-	return "Usuário logado com sucesso", nil
+	return tokenString, nil
 }

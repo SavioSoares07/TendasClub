@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"tendasclub/models"
 	"tendasclub/repository"
+	"tendasclub/services"
+	"time"
 )
 
 func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, error) {
@@ -14,6 +16,7 @@ func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, err
 		return "", fmt.Errorf("error retrieving user: %w", err)
 	}
 
+
 	record := models.TimeRecord{
 		UserID: int64(user.ID),
 		TimeStart: timeRecord.TimeStart,
@@ -22,12 +25,19 @@ func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, err
 		Status:  timeRecord.Status,
 		Duration: timeRecord.Duration,
 		Notes: timeRecord.Notes,
-		CreatedAt: timeRecord.CreatedAt,
+		CreatedAt: time.Now().Local().Format("2006-01-02 15:04:05"),
 	}
 
-	fmt.Println("Registering time record for user:", record)
+	RecordedTime, err := repository.CheckTimeRecord(record)
+	if err != nil{
+		return "", fmt.Errorf("erro ao verificar se o horario está marcado: %w", err)
+	}
 
 
-	return "teste", nil
+	if RecordedTime{
+		return "", fmt.Errorf("horario já marcado : %W", err)
+	}
+
+	return services.CreateTimeRecord(record)
 
 }

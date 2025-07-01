@@ -11,7 +11,7 @@ import (
 
 
 
-func Validade(u models.User) error{
+func ValidadeUser(u models.User) error{
 	return validation.ValidateStruct(&u,	
 		// Validação de nome
 		validation.Field(&u.Name,

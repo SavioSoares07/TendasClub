@@ -5,8 +5,7 @@ import (
 	"tendasclub/models"
 	"tendasclub/repository"
 	"tendasclub/services"
-
-	"golang.org/x/crypto/bcrypt"
+	"tendasclub/util/security"
 )
 
 
@@ -30,14 +29,15 @@ func LoginUser(c models.Credentials) (string, error) {
 
 	//Guarda a senha do usuário em uma variável
 	storeHash := user.Password
-	
+		
 	//Compara a senha do usuário com a senha armazenada no banco de dados
 	//Se a senha não for igual, retornar um erro 401
-	err = bcrypt.CompareHashAndPassword([]byte(storeHash), []byte(c.Password))
+
+	err = security.ComparePassword(storeHash, c.Password)
 	if err != nil {
 		return "Senha incorreta", nil
 	}
-
+	
 	//Se a senha for igual, criar o token de acesso
 	//O token será usado para autenticar o usuário em requisições futuras
 	tokenString, err := services.CreateToken(user.Email)

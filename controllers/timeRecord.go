@@ -48,3 +48,8 @@ func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, err
 func GetAllTime() ([]models.TimeRecord, error){
 	return repository.GetAllTimeRecords()
 }
+
+//Obter dados pelo email
+func GetTimeByEmail(email string) ([]models.TimeRecord, error){
+	return repository.GetAllTimeRecordsByEmail(email)
+}

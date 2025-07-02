@@ -59,4 +59,44 @@ func GetAllTimeRecords() ([]models.TimeRecord, error){
 
 }
 
-//Obter dados pelo id
+//Obter dados pelo email
+func GetAllTimeRecordsByEmail(email string) ([]models.TimeRecord, error){
+	var allTimesByEmail []models.TimeRecord
+
+
+	rows, err := database.DB.Query(`
+	SELECT tr.id, tr.user_id, tr.time_start, tr.time_end, tr.category,
+	       tr.status, tr.duration, tr.notes, tr.created_at
+	FROM time_records tr
+	JOIN users u ON u.id = tr.user_id
+	WHERE u.email = ?`, email)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+	for rows.Next(){
+		var tr models.TimeRecord
+		err := rows.Scan(
+			&tr.ID,
+			&tr.UserID,
+			&tr.TimeStart,
+			&tr.TimeEnd,
+			&tr.Category,
+			&tr.Status,
+			&tr.Duration,
+			&tr.Notes,
+			&tr.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		allTimesByEmail = append(allTimesByEmail, tr)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return allTimesByEmail, nil
+}

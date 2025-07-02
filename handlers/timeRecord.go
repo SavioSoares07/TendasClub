@@ -52,6 +52,31 @@ func GetAllTimeRecords(w http.ResponseWriter, r *http.Request){
 }
 
 // Get /GetTimeRecodrById
-func GetTimeRecordById(w http.ResponseWriter, r *http.Request){
+func GetTimeRecordByEmail(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
 
+	email := r.Header.Get("X-User-Email")
+
+	if email == "" {
+		http.Error(w, "Erro ao ler o email", http.StatusBadRequest)
+		return
+	}
+	
+	var allTimesRecordByEmail []models.TimeRecord
+
+	allTimesRecordByEmail, err := controllers.GetTimeByEmail(email)
+	if err != nil {
+		http.Error(w, "Erro ao obter dados gravados"+err.Error(), http.StatusBadRequest)
+	}
+
+	if allTimesRecordByEmail == nil {
+		data := map[string]string{"Messagem" : "Sem horario marcado"}
+		json.NewEncoder(w).Encode(data)
+		return
+	}
+
+
+
+	json.NewEncoder(w).Encode(allTimesRecordByEmail)
 }

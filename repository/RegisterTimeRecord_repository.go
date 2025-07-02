@@ -20,4 +20,43 @@ func CheckTimeRecord(timeRecord models.TimeRecord) (bool, error){
 	err := database.DB.QueryRow(query, timeRecord.TimeStart	).Scan(&recorded)
 
 	return recorded, err
-}	
+}
+
+// Obter todos os horarios
+func GetAllTimeRecords() ([]models.TimeRecord, error){
+	var allTimes []models.TimeRecord 
+	
+	rows, err := database.DB.Query("SELECT * FROM time_records")
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close() 
+	for rows.Next(){
+		var tr models.TimeRecord
+		err := rows.Scan(
+			&tr.ID,
+			&tr.UserID,
+			&tr.TimeStart,
+			&tr.TimeEnd,
+			&tr.Category,
+			&tr.Status,
+			&tr.Duration,
+			&tr.Notes,
+			&tr.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		allTimes = append(allTimes, tr)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return allTimes, nil
+
+}
+
+//Obter dados pelo id

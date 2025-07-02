@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+//Controlador Criação de Registro
+
 func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, error) {
 
 
@@ -40,4 +42,9 @@ func RegisterTimeRecord(email string, timeRecord models.TimeRecord) (string, err
 
 	return services.CreateTimeRecord(record)
 
+}
+
+//Obter todos os tempos
+func GetAllTime() ([]models.TimeRecord, error){
+	return repository.GetAllTimeRecords()
 }

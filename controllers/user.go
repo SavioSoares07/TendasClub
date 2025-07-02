@@ -8,7 +8,12 @@ import (
 	"tendasclub/util/security"
 )
 
+//Controller da criação de conta
+func CreateUser(user models.User) (string, error) {
+    return services.CreateUser(user)
+}
 
+//Controller de fazer o login
 func LoginUser(c models.Credentials) (string, error) {
 
 	// Verifica se o usuário existe

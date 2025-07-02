@@ -13,9 +13,13 @@ func main() {
 	database.ConnectionDB()
 
 	//Set up the Http Server
-	http.HandleFunc("/register", handlers.SignUpHandler)
-	http.HandleFunc("/login", handlers.SignInHandler)
-	http.HandleFunc("/registerTime", middleware.AuthMiddleware(handlers.RegisterTimeHandler))
+	//Method Post
+	http.HandleFunc("/api/register", handlers.SignUpHandler)
+	http.HandleFunc("/api/login", handlers.SignInHandler)
+	http.HandleFunc("/api/registerTime", middleware.AuthMiddleware(handlers.RegisterTimeHandler))
+
+	//Method Get
+	http.HandleFunc("/api/getallrecord", handlers.GetAllTimeRecords)
 
 	//Start the server
 	fmt.Println("Server is running on port 8080")

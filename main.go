@@ -22,6 +22,8 @@ func main() {
 	http.HandleFunc("/api/getallrecord", handlers.GetAllTimeRecords)
 	http.HandleFunc("/api/getrecordbyemail", middleware.AuthMiddleware(handlers.GetTimeRecordByEmail))
 
+	//Method put
+	http.HandleFunc("/api/updatepassword", middleware.AuthMiddleware(handlers.UpdatePasswordUser))
 	//Start the server
 	fmt.Println("Server is running on port 8080")
 	http.ListenAndServe(":8080", nil)

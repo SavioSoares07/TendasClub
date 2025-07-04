@@ -19,6 +19,17 @@ func CreateUser(user models.User) (string, error){
 		return "", fmt.Errorf("usuário já cadastrado: %W", err)
 	}
 
+	// Verificar se o numero já existe no banco de dados
+
+	numberExist, err := repository.PhoneExists(user.Number)
+	if err != nil {
+		return "", fmt.Errorf("erro ao verificar se o numero existe: %W", err)
+	}
+
+	if numberExist {
+		return "", fmt.Errorf("numero já cadastrado: %W", err)
+	}
+
 	//Criptografa a senha do usuário
 	hashedPassword, err := security.HashPassword(user.Password)
 	if err != nil {

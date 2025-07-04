@@ -20,6 +20,13 @@ func UserExists(email string) (bool, error) {
 	return exists, err
 }
 
+//Verifica se o numero já está cadastrado
+func PhoneExists(number string) (bool, error){
+	var exists bool
+	query := "SELECT EXISTS (SELECT 1 FROM users WHERE number = ?)"
+	err := database.DB.QueryRow(query, number).Scan(&exists)
+	return exists, err
+}
 
 // Busca um usuário pelo email no banco de dados
 func GetUserByEmail(email string) (models.User, error) {

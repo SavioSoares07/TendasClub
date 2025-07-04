@@ -49,6 +49,11 @@ func LoginUser(c models.Credentials) (string, error) {
 	if err != nil {
 		return "Erro ao criar o token", err
 	}
-	fmt.Print(tokenString)
 	return tokenString, nil
+}
+
+//Autlizar senha do usuário
+
+func UpdatePassword(email string){
+	fmt.Print(email)
 }

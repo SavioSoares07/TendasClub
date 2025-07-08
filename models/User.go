@@ -8,3 +8,8 @@ type User struct {
 	Number   string `json:"number"`
 	Role     string `json:"role"`
 }
+
+type PasswordChange struct {
+	NewPassword string `json:"new_password"`
+	OldPassword string `json:"old_password"`
+}

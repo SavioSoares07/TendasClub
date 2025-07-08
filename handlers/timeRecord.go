@@ -81,16 +81,3 @@ func GetTimeRecordByEmail(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(allTimesRecordByEmail)
 }
 
-//Put /updatepassword
-
-func UpdatePasswordUser(w http.ResponseWriter, r *http.Request){
-	email := r.Header.Get("X-User-Email")
-
-	if email == "" {
-		http.Error(w, "Erro ao ler o email", http.StatusBadRequest)
-		return
-	}
-
-	controllers.UpdatePassword(email)
-	
-}

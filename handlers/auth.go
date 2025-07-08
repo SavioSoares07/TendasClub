@@ -73,3 +73,33 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, "Usuário criado com sucesso: %v", res)
 }
+
+//Put /updatepassword
+
+func UpdatePasswordUser(w http.ResponseWriter, r *http.Request) {
+	var newPassword models.PasswordChange
+
+	email := r.Header.Get("X-User-Email")
+	if email == "" {
+		http.Error(w, "Erro ao ler o e-mail", http.StatusBadRequest)
+		return
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&newPassword)
+	if err != nil {
+		http.Error(w, "Erro ao ler os dados: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	message, err := controllers.UpdatePassword(email, newPassword)
+	if err != nil {
+		http.Error(w, message+": "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Sucesso
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(map[string]string{"message": message})
+}

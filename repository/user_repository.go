@@ -41,3 +41,14 @@ func GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
+// Atualziar Senha do usuário
+
+func UpdatePasswordUser(u models.User) (string, error){
+	_, err := database.DB.Exec("UPDATE users SET name = ?, email = ?, password = ?, number = ?, role = ? WHERE id = ?", u.Name, u.Email, u.Password, u.Number, u.Role, u.ID)
+	if err != nil {
+		return "Ocoreu um erro", err
+	}
+
+
+	return "Senha alterada com sucesso", nil
+}

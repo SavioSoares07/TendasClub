@@ -54,6 +54,29 @@ func LoginUser(c models.Credentials) (string, error) {
 
 //Autlizar senha do usuário
 
-func UpdatePassword(email string){
-	fmt.Print(email)
+func UpdatePassword(email string, passwordChange models.PasswordChange) (string, error) {
+	user, err := repository.GetUserByEmail(email)
+	if err != nil {
+		return "", fmt.Errorf("erro ao buscar usuário: %w", err)
+	}
+
+	err = security.ComparePassword(user.Password, passwordChange.OldPassword)
+	if err != nil {
+		return "", fmt.Errorf("senha incorreta")
+	}
+
+	hashedPassword, err := security.HashPassword(passwordChange.NewPassword)
+	if err != nil {
+		return "", fmt.Errorf("erro ao criptografar nova senha: %w", err)
+	}
+
+	user.Password = hashedPassword
+
+	message, err := repository.UpdatePasswordUser(user)
+	if err != nil {
+		return "", fmt.Errorf("erro ao atualizar senha: %w", err)
+	}
+
+	fmt.Println(message)
+	return "Senha alterada com sucesso", nil
 }
